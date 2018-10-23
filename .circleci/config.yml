@@ -5,8 +5,7 @@ general:
      - testing
 jobs:
   build:
-    docker:
-      - image: ubuntu:xenial
+    machine: true
     steps:
       - checkout
       - run: |
