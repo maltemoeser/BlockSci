@@ -1,3 +1,6 @@
+echo $PATH
+which blocksci_parser
+ls $HOME/.blocksci/bin
 cd test
 blocksci_parser btc.json generate-config bitcoin_regtest bitcoin_regtest --disk files/btc/regtest/
 blocksci_parser btc.json update
