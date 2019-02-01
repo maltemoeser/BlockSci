@@ -9,7 +9,7 @@ cache:
     - release
     - blockscipy/build
     - .mtime_cache
-    - /usr/local/include/blocksci
+    - $HOME/.blocksci
 matrix:
   include:
     - stage: Build C++ Library
