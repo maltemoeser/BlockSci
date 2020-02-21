@@ -63,7 +63,7 @@ struct ScriptOutputData<blocksci::AddressType::Enum::PUBKEY> : public ScriptOutp
     
     blocksci::RawPubkey pubkey;
     
-    ScriptOutputData(const ranges::iterator_range<const unsigned char *> &vch1);
+    ScriptOutputData(const ranges::subrange<const unsigned char *> &vch1);
     ScriptOutputData(const blocksci::RawPubkey &pub) {
         pubkey.fill(0);
         pubkey = pub;
@@ -93,7 +93,7 @@ struct ScriptOutputData<blocksci::AddressType::Enum::MULTISIG_PUBKEY> : public S
     
     blocksci::RawPubkey pubkey;
     
-    ScriptOutputData(const ranges::iterator_range<const unsigned char *> &vch1);
+    ScriptOutputData(const ranges::subrange<const unsigned char *> &vch1);
     ScriptOutputData(const blocksci::RawPubkey &pub) {
         pubkey.fill(0);
         pubkey = pub;
@@ -152,7 +152,7 @@ struct ScriptOutputData<blocksci::AddressType::Enum::MULTISIG> : public ScriptOu
     
     ScriptOutputData() : addressCount(0) {}
     
-    void addAddress(const ranges::iterator_range<const unsigned char *> &vch1);
+    void addAddress(const ranges::subrange<const unsigned char *> &vch1);
     
     bool isValid() const {
         return numRequired <= numTotal && numTotal == addressCount;
@@ -202,7 +202,7 @@ struct ScriptOutputData<blocksci::AddressType::Enum::WITNESS_UNKNOWN> : public S
     std::vector<unsigned char> witnessData;
     
     ScriptOutputData() {}
-    ScriptOutputData(uint8_t witnessVersion, const ranges::iterator_range<const unsigned char *> &witnessData);
+    ScriptOutputData(uint8_t witnessVersion, const ranges::subrange<const unsigned char *> &witnessData);
     
     blocksci::ArbitraryLengthData<blocksci::WitnessUnknownScriptData> getData(uint32_t txNum, bool topLevel) const;
 };
