@@ -180,18 +180,20 @@ namespace blocksci {
         });
     }
     
-    ranges::optional<DedupAddress> AddressIndex::getNestingScriptHash(const RawAddress &searchAddress) const {
+    std::vector<DedupAddress> AddressIndex::getNestingScriptHash(const RawAddress &searchAddress) const {
+        std::vector<DedupAddress> parents;
         rocksdb::Slice key{reinterpret_cast<const char *>(&searchAddress.scriptNum), sizeof(searchAddress.scriptNum)};
         auto it = getNestedIterator(searchAddress.type);
         it->Seek(key);
-        if (it->Valid() && it->key().starts_with(key)) {
+        while (it->Valid() && it->key().starts_with(key)) {
             auto foundKey = it->key();
             foundKey.remove_prefix(sizeof(uint32_t));
             DedupAddress rawParent;
             memcpy(&rawParent, foundKey.data(), sizeof(rawParent));
-            return rawParent;
+            parents.push_back(rawParent);
+            it->Next();
         }
-        return ranges::nullopt;
+        return parents;
     }
     
     std::unordered_set<DedupAddress> AddressIndex::getPossibleNestedEquivalentUp(const RawAddress &searchAddress) const {
@@ -199,12 +201,12 @@ namespace blocksci {
         std::unordered_set<DedupAddress> searchedAddresses;
         while (addressesToSearch.size() > 0) {
             auto address = *addressesToSearch.begin();
-            auto nestingAddress = getNestingScriptHash(address);
-            if (nestingAddress) {
-                if (nestingAddress->type == DedupAddressType::SCRIPTHASH) {
-                    if (searchedAddresses.find(*nestingAddress) == searchedAddresses.end()) {
+            auto nestingAddresses = getNestingScriptHash(address);
+            for(auto nestingAddress : nestingAddresses) {
+                if (nestingAddress.type == DedupAddressType::SCRIPTHASH) {
+                    if (searchedAddresses.find(nestingAddress) == searchedAddresses.end()) {
                         for (auto type : equivAddressTypes(dedupType(AddressType::SCRIPTHASH))) {
-                            addressesToSearch.insert({nestingAddress->scriptNum, type});
+                            addressesToSearch.insert({nestingAddress.scriptNum, type});
                         }
                     }
                 }
