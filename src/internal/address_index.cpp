@@ -212,7 +212,7 @@ namespace blocksci {
                 }
             }
             searchedAddresses.insert({address.scriptNum, dedupType(address.type)});
-            addressesToSearch.erase(addressesToSearch.begin());
+            addressesToSearch.erase(address);
         }
         return searchedAddresses;
     }
