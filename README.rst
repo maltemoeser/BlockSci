@@ -20,10 +20,10 @@ For installation instructions, see below.
 Latest release (BlockSci v0.5.0)
 ================================
 
-Version 0.5.0 focuses mainly on improvements and cleanups in the python interface. The largest new feature is the introduction of vectorized operations which return NumPy arrays, enabling much more rapid usage of BlockSci's python interface. You can read more details about the release in the `release notes`_. We are releasing a new AMI_ running 0.5.0 (explained under "Quick setup" below).
+Version 0.5.0 focuses mainly on improvements and cleanups in the Python interface. The largest new feature is the introduction of vectorized operations which return NumPy arrays, enabling much more rapid usage of BlockSci's Python interface. You can read more details about the release in the `release notes`_. We are releasing a new AMI_ running 0.5.0 (explained under "Quick setup" below).
 
 .. _release notes: https://citp.github.io/BlockSci/changelog.html#version-0-5-0
-.. _AMI: https://console.aws.amazon.com/ec2/home?region=us-east-1#launchAmi=ami-1bc34e64
+.. _AMI: https://console.aws.amazon.com/ec2/home?region=us-east-1#launchAmi=ami-0d0091e593d44cce1
 
 
 Quick setup using Amazon EC2
@@ -31,7 +31,7 @@ Quick setup using Amazon EC2
 
 AMI Last updated on May 8, 2018.
 
-If you want to start using BlockSci immediately, we have made available an EC2 image: ami-1bc34e64_. We recommend using instance with 60 GB of memory or more for optimal performance (r4.2xlarge). On boot, a Jupyter Notebook running BlockSci will launch immediately. To access the notebook, you must set up port forwarding to your computer. Inserting the name of your private key file and the domain of your ec2 instance into the following command will make the Notebook available on your machine.
+If you want to start using BlockSci immediately, we have made available an EC2 image: ami-0d0091e593d44cce1_. We recommend using an instance with 60 GB of memory or more for optimal performance (r5.2xlarge). As of August 2019 the default disk size of 500GB may not suffice anymore, we therefore recommend choosing a larger disk size (e.g., 600 GB) when you first create the instance. On boot, a Jupyter Notebook running BlockSci will launch immediately. To access the notebook, you must set up port forwarding to your computer. Inserting the name of your private key file and the domain of your ec2 instance into the following command will make the Notebook available on your machine.
 
 .. code-block:: bash
 
@@ -43,9 +43,10 @@ AWS instances suffer from a `known performance issue`_ when starting up from an 
 
 There is no need for user intervention to resolve this issue since the machine will do so automatically on launch.
 
-The AMI contains a fully updated version of the Bitcoin blockchain as of the creation date of the AMI (March 8, 2017). Additionally it will automatically start a Bitcoin full node and update the blockchain once every hour to the latest version of the chain.
+The AMI contains a fully updated version of the Bitcoin blockchain as of the creation date of the AMI (May 8, 2018). Additionally it will automatically start a Bitcoin full node and update the blockchain once every hour to the latest version of the chain.
+When you start the AMI for the first time, it will take a few hours for the full node to synchronize with the Bitcoin network and for new blocks (after May 2018) to become available in BlockSci.
 
-.. _ami-1bc34e64: https://console.aws.amazon.com/ec2/home?region=us-east-1#launchAmi=ami-1bc34e64
+.. _ami-0d0091e593d44cce1: https://console.aws.amazon.com/ec2/home?region=us-east-1#launchAmi=ami-0d0091e593d44cce1
 .. _known performance issue: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-initialize.html
 
 Using the analysis library
@@ -69,16 +70,16 @@ In order to use the C++ library, you must compile your code against the BlockSci
 Python
 -------
 
-Note that BlockSci only supports python 3.
+Note that BlockSci only supports Python 3.
 
-To use the BlockSci in python, you only need to import the BlockSci library. By default the library is installed into BlockSci/Notebooks. To use the library first open the Python interpreter in that folder:
+To use the BlockSci in Python, you only need to import the BlockSci library. By default the library is installed into BlockSci/Notebooks. To use the library first open the Python interpreter in that folder:
 
 .. code-block:: bash
 
 	cd BlockSci/Notebooks
 	python3
 	
-With the python interpreter open, the following code will load a Blockchain object created from the data output by the parser:
+With the Python interpreter open, the following code will load a Blockchain object created from the data output by the parser:
 
 .. code-block:: python
 
@@ -104,10 +105,32 @@ Compilation_ instructions as well as setup_ instructions are available in the do
 .. _Compilation: https://citp.github.io/BlockSci/compiling.html
 .. _setup: https://citp.github.io/BlockSci/setup.html
 
+
 Getting help
 ============
 
-If you've encountered a bug or have a question about using BlockSci, the best way to get help is to open a GitHub issue. We are an academic team and aren't able to provide the standard of support that you might expect for a commercial project, but we'll do our best. 
+Please make sure to check the list of `Frequently Asked Questions`_ first.
+If you've encountered a bug or have a question about using BlockSci not answered in the FAQ, the best way to get help is to open a GitHub issue. We are an academic team and aren't able to provide the standard of support that you might expect for a commercial project, but we'll do our best. 
+
+.. _Frequently Asked Questions: https://github.com/citp/BlockSci/wiki
+
+
+Contributing
+============
+
+We highly welcome contributions to BlockSci. Below we've listed a few ways you can help improve BlockSci:
+
+- *Maintenance:* We greatly appreciate help in maintaining BlockSci, including raising issues with reproducible examples, reviewing pull requests, helping answer questions about using BlockSci, or fixing smaller bugs.
+- *Documentation:* We welcome contributions that improve our documentation_ and FAQ_ or add helpful comments to the code.
+- *Testing:* We welcome contributions that extend or improve our existing Python test suite. We also welcome improvements of the `testchain-generator`_ that we use to generate a synthetic blockchain to run tests against.
+- *Code contributions:* If you're interested in making larger code contributions (e.g., adding new features, extensive rewrites of existing code), please contact us first.
+
+We're currently working on a new version on the `v0.6 branch`_. Most contributions should use this development branch as a starting point. (The development branch can be unstable at times. The master branch contains the last stable version for which an AMI was released. All other branches are feature branches that shouldn't be used.)
+
+.. _testchain-generator: https://github.com/citp/testchain-generator
+.. _v0.6 branch: https://github.com/citp/BlockSci/tree/v0.6
+.. _documentation: https://citp.github.io/BlockSci/
+.. _FAQ: https://github.com/citp/BlockSci/wiki
 
 Team & contact info
 ===================
